@@ -151,5 +151,13 @@ public class Juego {
     public int getPuntuacion() { 
         return jugador.getPuntuacion(); 
     }
+    
+    public int getAnchoPantalla() {
+        return anchoPantalla;
+    }
+    
+    public int getAltoPantalla() {
+        return altoPantalla;
+    }
 }
 

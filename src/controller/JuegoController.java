@@ -41,21 +41,41 @@ public class JuegoController {
         juego.moverJugadorDerecha();
     }
     
-    public void dibujarJugador(Graphics2D g2d) {
+    public void dibujarJugador(Graphics2D g2d, int anchoPanel, int altoPanel) {
         Jugador jugador = juego.getJugador();
+        
+        // Calcular factores de escala
+        double escalaX = (double) anchoPanel / juego.getAnchoPantalla();
+        double escalaY = (double) altoPanel / juego.getAltoPantalla();
+        
+        // Escalar coordenadas y tamaños
+        int x = (int)(jugador.getX() * escalaX);
+        int y = (int)(jugador.getY() * escalaY);
+        int ancho = (int)(jugador.getAncho() * escalaX);
+        int alto = (int)(jugador.getAlto() * escalaY);
         
         // Dibujar canasta
         g2d.setColor(new Color(139, 69, 19));
-        g2d.fillRect(jugador.getX(), jugador.getY(), jugador.getAncho(), jugador.getAlto());
+        g2d.fillRect(x, y, ancho, alto);
     
         //borde de la canasta
         g2d.setColor(Color.BLACK);
-        g2d.setStroke(new java.awt.BasicStroke(2));
-        g2d.drawRect(jugador.getX(), jugador.getY(), jugador.getAncho(), jugador.getAlto());
+        g2d.setStroke(new java.awt.BasicStroke((float)(2 * Math.min(escalaX, escalaY))));
+        g2d.drawRect(x, y, ancho, alto);
     
         //asa de la canasta
-        int[] xPoints = {jugador.getX() + 5, jugador.getX() + 15, jugador.getX() + 45, jugador.getX() + 55};
-        int[] yPoints = {jugador.getY(), jugador.getY() - 10, jugador.getY() - 10, jugador.getY()};
+        int[] xPoints = {
+            (int)((jugador.getX() + 5) * escalaX), 
+            (int)((jugador.getX() + 15) * escalaX), 
+            (int)((jugador.getX() + 45) * escalaX), 
+            (int)((jugador.getX() + 55) * escalaX)
+        };
+        int[] yPoints = {
+            (int)(jugador.getY() * escalaY), 
+            (int)((jugador.getY() - 10) * escalaY), 
+            (int)((jugador.getY() - 10) * escalaY), 
+            (int)(jugador.getY() * escalaY)
+        };
         g2d.setColor(new Color(139, 69, 19));
         g2d.fillPolygon(xPoints, yPoints, 4);
         g2d.setColor(Color.BLACK);
@@ -64,22 +84,33 @@ public class JuegoController {
     }
     
     //dibujar objetos que caen
-    public void dibujarObjetos(Graphics2D g2d) {
+    public void dibujarObjetos(Graphics2D g2d, int anchoPanel, int altoPanel) {
         List<ObjetoCaida> objetos = juego.getObjetos();
+        
+        // Calcular factores de escala
+        double escalaX = (double) anchoPanel / juego.getAnchoPantalla();
+        double escalaY = (double) altoPanel / juego.getAltoPantalla();
         
         for (ObjetoCaida objeto : objetos) {
             if (objeto.isActivo()) {
+                // Escalar coordenadas y tamaños
+                int x = (int)(objeto.getX() * escalaX);
+                int y = (int)(objeto.getY() * escalaY);
+                int ancho = (int)(objeto.getAncho() * escalaX);
+                int alto = (int)(objeto.getAlto() * escalaY);
+                
                 if (objeto.getTipo() == ObjetoCaida.TipoObjeto.BUENO) {
-                    g2d.setColor(Color.GREEN);g2d.fillOval(objeto.getX(), objeto.getY(), objeto.getAncho(), objeto.getAlto());
+                    g2d.setColor(Color.GREEN);
+                    g2d.fillOval(x, y, ancho, alto);
                     g2d.setColor(new Color(0, 100, 0)); 
-                    g2d.setStroke(new java.awt.BasicStroke(2));
-                    g2d.drawOval(objeto.getX(), objeto.getY(), objeto.getAncho(), objeto.getAlto());
+                    g2d.setStroke(new java.awt.BasicStroke((float)(2 * Math.min(escalaX, escalaY))));
+                    g2d.drawOval(x, y, ancho, alto);
                 } else {
                     g2d.setColor(Color.RED);
-                    g2d.fillOval(objeto.getX(), objeto.getY(), objeto.getAncho(), objeto.getAlto());
+                    g2d.fillOval(x, y, ancho, alto);
                     g2d.setColor(new Color(139, 0, 0)); 
-                    g2d.setStroke(new java.awt.BasicStroke(2));
-                    g2d.drawOval(objeto.getX(), objeto.getY(), objeto.getAncho(), objeto.getAlto());
+                    g2d.setStroke(new java.awt.BasicStroke((float)(2 * Math.min(escalaX, escalaY))));
+                    g2d.drawOval(x, y, ancho, alto);
                 }
             }   
         }

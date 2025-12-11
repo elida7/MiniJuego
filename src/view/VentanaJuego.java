@@ -26,23 +26,27 @@ public class VentanaJuego extends JFrame implements ActionListener, KeyListener 
         configurarVentana();
         crearComponentes();
         organizarLayout();
+        
+        pack();
+        setSize(800, 600);
+        setLocationRelativeTo(null);
 
         timer = new Timer(16, this); // 60fps
     }
     
     private void configurarVentana() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
-        setLocationRelativeTo(null);
         setLayout(new BorderLayout());
         addKeyListener(this);
         setFocusable(true);
+        setMinimumSize(new Dimension(800, 600));
     }
     
     private void crearComponentes() {
         //panel del juego personalizado
         panelJuego = new PanelJuego(controlador);
         panelJuego.setPreferredSize(new Dimension(800, 500));
+        panelJuego.setMinimumSize(new Dimension(800, 500));
         panelJuego.setBackground(new Color(135, 206, 250));
 
         // Panel de información
@@ -187,8 +191,11 @@ public class VentanaJuego extends JFrame implements ActionListener, KeyListener 
             Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             
-            controller.dibujarJugador(g2d);
-            controller.dibujarObjetos(g2d);
+            int anchoPanel = getWidth();
+            int altoPanel = getHeight();
+            
+            controller.dibujarJugador(g2d, anchoPanel, altoPanel);
+            controller.dibujarObjetos(g2d, anchoPanel, altoPanel);
 
             // Dibujar mensaje de pausa
             if (controller.isPausado()) {
