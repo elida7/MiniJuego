@@ -27,6 +27,13 @@ public class Jugador {
             x -= 10;
         }
     }
+
+    public boolean colisiona(ObjetoCaida objeto) {
+        return x < objeto.getX() + objeto.getAncho() &&
+               x + ancho > objeto.getX() &&
+               y < objeto.getY() + objeto.getAlto() &&
+               y + alto > objeto.getY();
+    }
     
     // Getters
     public int getX() { return x; }

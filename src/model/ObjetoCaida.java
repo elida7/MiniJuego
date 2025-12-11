@@ -14,7 +14,8 @@ public class ObjetoCaida {
         BUENO, MALO
     }
     
-    private TipoObjeto tipo;
+    private static Random random = new Random();
+    private boolean activo;
     
     public ObjetoCaida(int x, int y, int ancho, int alto, TipoObjeto tipo) {
         this.x = x;
@@ -22,8 +23,12 @@ public class ObjetoCaida {
         this.ancho = ancho;
         this.alto = alto;
         this.tipo = tipo;
-        this.velocidad = 3;
+        this.velocidad = 2 + random.nextInt(3);
+        this.activo = true;
     }
+
+    public boolean isActivo() { return activo; }
+    public void setActivo(boolean activo) { this.activo = activo; }
     
     public void caer() {
         y += velocidad;
